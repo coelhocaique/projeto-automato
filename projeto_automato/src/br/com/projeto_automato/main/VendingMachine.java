@@ -1,71 +1,93 @@
- package br.com.projeto_automato.main;
+package br.com.projeto_automato.main;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+
+import javax.swing.JOptionPane;
 
 public class VendingMachine {
 
 	public static void main(String[] args) throws IOException {
 
-		System.out.println("Seja Bem vindo!!");
-		System.out.println("Notas Aceitas: R$ 5,00,R$ 2,00,R$ 1,00.");
-		System.out.println("Digite 0 para indicar o fim da entrada das notas!");
-		System.out.println("Insira as notas");
-		BufferedReader scanNota = new BufferedReader(new InputStreamReader(System.in));
+		double valorTotal = 0, valorEntrada = -1;
+		char doce;
 
-		double valorTotal = 0, sub = 0, valorEntrada;
-		
-		
-		valorEntrada = Double.parseDouble(scanNota.readLine());
-		
-		while (valorEntrada != 0) {
+		while (true) {
+			try {
+				valorEntrada = Double.parseDouble(
+						JOptionPane.showInputDialog("Seja Bem vindo!!" + "\nNotas Aceitas: R$ 5,00,R$ 2,00,R$ 1,00."
+								+ "\nDigite 0 para indicar o fim da entrada das notas!" + "\nInsira as notas"));
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Cédula inválida!");
+			}
+
+			if (valorEntrada == 0)
+				break;
 
 			if (valorEntrada == 5 || valorEntrada == 2 || valorEntrada == 1) {
-
 				valorTotal += valorEntrada;
-				
-				if (valorTotal == 6) {
-					System.out.println("Doce A disponivel");
-					sub = 6;
-				} else if (valorTotal == 7) {
-					System.out.println("Doce B disponivel");
-					sub = 7;
-				} else if (valorTotal >= 8) {
-					System.out.println("Doce C disponivel");
-					sub = 8;
-				} else {
-					System.out.println("Nenhum doce Disponível");
-				}
-			}else{
-				System.out.println("Valor inválido!");
+			} else {
+				JOptionPane.showMessageDialog(null, "Cédula inválida!");
 			}
-			
-			valorEntrada = Double.parseDouble(scanNota.readLine());
 		}
 
-		System.out.println();
+		while (true) {
 
-		if (sub == 6) {
-			if ((valorTotal - sub) > 0)
-				System.out.printf("Doce A escolhido! Troco: R$ %.2f\n",(valorTotal - sub));
-			else
-				System.out.println("Doce A escolhido sem troco!");
-		} else if (sub == 7) {
-			if ((valorTotal - sub) > 0)
-				System.out.printf("Doce B escolhido! Troco: R$ %.2f\n",(valorTotal - sub));
-			else
-				System.out.println("Doce B escolhido sem troco!");
-		} else if (sub >= 8) {
-			if ((valorTotal - sub) > 0)
-				System.out.printf("Doce C escolhido! Troco: R$ %.2f\n",(valorTotal - sub));
-			else
-				System.out.println("Doce C escolhido sem troco!");
-		} else {
-			if ((valorTotal - sub) > 0)
-				System.out.printf("Nenhum doce escolhido! Troco: R$ %.2f\n",(valorTotal - sub));
-			else
-				System.out.println("Nenhum doce escolhido sem troco!");
+			String doceEnt = "";
+
+			try {
+				if (valorTotal == 6) {
+					doceEnt = JOptionPane
+							.showInputDialog("Doces disponíveis" + "\nDoce A: R$ 6,00" + "\nEscolha o doce preferido:");
+
+					doce = Character.toUpperCase(doceEnt.charAt(0));
+
+					if (doce == 'A') {
+						break;
+					} else {
+						JOptionPane.showMessageDialog(null, "Opção inválida!");
+					}
+				}else if(valorTotal <= 7){
+					doceEnt = JOptionPane
+							.showInputDialog("Doces disponíveis" + "\nDoce A: R$ 6,00" +
+					"\nDoce B: R$ 7,00" +"\nEscolha o doce preferido:");
+
+					doce = Character.toUpperCase(doceEnt.charAt(0));
+
+					if (doce == 'A' || doce == 'B') {
+						break;
+					} else {
+						JOptionPane.showMessageDialog(null, "Opção inválida!");
+					}
+				}else if(valorTotal >= 8){
+					doceEnt = JOptionPane
+							.showInputDialog("Doces disponíveis" + "\nDoce A: R$ 6,00" + 
+									"\nDoce B: R$ 7,00" + "\nDoce C: R$ 8,00" + "\nEscolha o doce preferido:");
+
+					doce = Character.toUpperCase(doceEnt.charAt(0));
+
+					if (doce == 'A' || doce == 'B' || doce == 'C') {
+						break;
+					} else {
+						JOptionPane.showMessageDialog(null, "Opção inválida!");
+					}
+				}
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Opção inválida!");
+			}
+
 		}
+
+		switch (doce) {
+		case 'A':	
+			JOptionPane.showMessageDialog(null, "Doce A escolhido! Troco: R$ " + (valorTotal - 6));
+			break;
+		case 'B':
+			JOptionPane.showMessageDialog(null, "Doce B escolhido! Troco: R$ " + (valorTotal - 7));
+			break;
+		case 'C':
+			JOptionPane.showMessageDialog(null, "Doce C escolhido! Troco: R$ " + (valorTotal - 8));
+			break;
+		}
+
 	}
 }
